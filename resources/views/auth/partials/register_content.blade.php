@@ -1,11 +1,18 @@
-<form class="space-y-6" action="#" method="POST">
+<form class="space-y-6" action="{{ route('auth.register') }}" method="POST" novalidate>
+    @csrf
     <!-- First Name -->
+    {{-- {{ print_r($errors->all()) }} --}}
     <div>
         <label for="first_name" class="block text-sm font-medium leading-6 text-gray-900">First Name</label>
         <div class="mt-2">
             <input id="first_name" name="first_name" type="text" autocomplete="first_name" placeholder="Muhammad"
-                required
-                class="block w-full rounded-md border-0 p-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:text-sm sm:leading-6" />
+                required max="32" value="{{old('first_name')}}"
+                class="block w-full rounded-md border-0 p-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:text-sm sm:leading-6 " />
+            @error('first_name')
+                <div class="text-red-500">
+                    {{ $message }}
+                </div>
+            @enderror
         </div>
     </div>
 
@@ -14,8 +21,13 @@
         <label for="last_name" class="block text-sm font-medium leading-6 text-gray-900">Last Name</label>
         <div class="mt-2">
             <input id="last_name" name="last_name" type="text" autocomplete="last_name" placeholder="Alp Arslan"
-                required
+                required max="32" value="{{old('last_name')}}"
                 class="block w-full rounded-md border-0 p-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:text-sm sm:leading-6" />
+                @error('last_name')
+                <div class="text-red-500">
+                    {{ $message }}
+                </div>
+            @enderror
         </div>
     </div>
 
@@ -24,8 +36,13 @@
         <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Email address</label>
         <div class="mt-2">
             <input id="email" name="email" type="email" autocomplete="email" placeholder="alp.arslan@mail.com"
-                required
+                required max="64" value="{{old('email')}}"
                 class="block w-full rounded-md border-0 p-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:text-sm sm:leading-6" />
+                @error('email')
+                <div class="text-red-500">
+                    {{ $message }}
+                </div>
+            @enderror
         </div>
     </div>
 
@@ -34,8 +51,13 @@
         <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Password</label>
         <div class="mt-2">
             <input id="password" name="password" type="password" autocomplete="current-password" placeholder="••••••••"
-                required
+                required value="{{old('password')}}"
                 class="block w-full rounded-md border-0 p-2 p-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:text-sm sm:leading-6" />
+                @error('password')
+                <div class="text-red-500">
+                    {{ $message }}
+                </div>
+            @enderror
         </div>
     </div>
 
