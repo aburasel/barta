@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\AppController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -12,19 +14,17 @@ use Illuminate\Support\Facades\Route;
 | routes are loaded by the RouteServiceProvider and all of them will
 | be assigned to the "web" middleware group. Make something great!
 |
-*/
+ */
 
-Route::get('user/register',[AuthController::class,"create"]);
-Route::post('user/register',[AuthController::class,"store"])->name("auth.register");
+Route::get('user/register', [AuthController::class, "create"]);
+Route::post('user/register', [AuthController::class, "store"])->name("auth.register");
 
-Route::get('/', function () {
-    return view('auth.login');
-});
 
-Route::get('user/profile', function () {
-    return view('main.profile');
-});
+Route::get('/login', [AuthController::class, 'index'])->name('login');
+Route::post('/post-login', [AuthController::class, 'postLogin'])->name('auth.login');
 
-Route::get('/edit-profile', function () {
-    return view('main.edit_profile');
-});
+Route::get('user/profile', [ProfileController::class, "profile"])->name("profile");
+Route::get('user/edit-profile', [ProfileController::class, "editProfile"])->name("profile.edit");
+Route::post('user/profile', [ProfileController::class, "postProfile"])->name("profile.post");
+Route::get('/logout', [AuthController::class, "logOut"])->name("auth.logout");
+Route::get('/', [AppController::class, "index"])->name("dashboard");

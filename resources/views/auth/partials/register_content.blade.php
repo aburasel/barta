@@ -6,10 +6,10 @@
         <label for="first_name" class="block text-sm font-medium leading-6 text-gray-900">First Name</label>
         <div class="mt-2">
             <input id="first_name" name="first_name" type="text" autocomplete="first_name" placeholder="Muhammad"
-                required max="32" value="{{old('first_name')}}"
+                required max="32" value="{{ old('first_name') }}"
                 class="block w-full rounded-md border-0 p-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:text-sm sm:leading-6 " />
             @error('first_name')
-                <div class="text-red-500">
+                <div class="text-red-500 text-xs">
                     {{ $message }}
                 </div>
             @enderror
@@ -21,10 +21,10 @@
         <label for="last_name" class="block text-sm font-medium leading-6 text-gray-900">Last Name</label>
         <div class="mt-2">
             <input id="last_name" name="last_name" type="text" autocomplete="last_name" placeholder="Alp Arslan"
-                required max="32" value="{{old('last_name')}}"
+                required max="32" value="{{ old('last_name') }}"
                 class="block w-full rounded-md border-0 p-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:text-sm sm:leading-6" />
-                @error('last_name')
-                <div class="text-red-500">
+            @error('last_name')
+                <div class="text-red-500 text-xs">
                     {{ $message }}
                 </div>
             @enderror
@@ -36,10 +36,10 @@
         <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Email address</label>
         <div class="mt-2">
             <input id="email" name="email" type="email" autocomplete="email" placeholder="alp.arslan@mail.com"
-                required max="64" value="{{old('email')}}"
+                required max="64" value="{{ old('email') }}"
                 class="block w-full rounded-md border-0 p-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:text-sm sm:leading-6" />
-                @error('email')
-                <div class="text-red-500">
+            @error('email')
+                <div class="text-red-500 text-xs">
                     {{ $message }}
                 </div>
             @enderror
@@ -50,11 +50,11 @@
     <div>
         <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Password</label>
         <div class="mt-2">
-            <input id="password" name="password" type="password" autocomplete="current-password" placeholder="••••••••"
-                required value="{{old('password')}}"
+            <input id="password" name="password" type="password" maxlength="32" autocomplete="current-password"
+                placeholder="••••••••" required value="{{ old('password') }}"
                 class="block w-full rounded-md border-0 p-2 p-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:text-sm sm:leading-6" />
-                @error('password')
-                <div class="text-red-500">
+            @error('password')
+                <div class="text-red-500 text-xs">
                     {{ $message }}
                 </div>
             @enderror

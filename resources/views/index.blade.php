@@ -43,6 +43,8 @@
                   <h2 class="font-bold text-2xl">Barta</h2>
                 </a>
               </div>
+              {{-- {{print_R(session('user'))}} --}}
+              
 <!--              <div class="hidden sm:ml-6 sm:flex sm:space-x-8">-->
 <!--                &lt;!&ndash; Current: "border-gray-800 text-gray-900 font-semibold", Default: "border-transparent text-gray-600 hover:border-gray-300 hover:text-gray-800" &ndash;&gt;-->
 <!--                <a-->
@@ -138,7 +140,7 @@
                   aria-labelledby="user-menu-button"
                   tabindex="-1">
                   <a
-                    href="./profile.html"
+                    href="{{ route('profile')}}"
                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     role="menuitem"
                     tabindex="-1"
@@ -146,7 +148,7 @@
                     >Your Profile</a
                   >
                   <a
-                    href="./edit-profile.html"
+                    href="{{ route('profile.edit')}}"
                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     role="menuitem"
                     tabindex="-1"

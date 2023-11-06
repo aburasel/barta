@@ -16,8 +16,10 @@
 
         <!-- User Meta -->
         <div>
-            <h1 class="font-bold md:text-2xl">Ahmed Shamim Hasan Shaon</h1>
-            <p class="text-gray-700">Less Talk, More Code 💻</p>
+            <h1 class="font-bold md:text-2xl">{{ session('user.first_name') }} {{ session('user.last_name') }}</h1>
+            <p class="text-gray-700">
+                {{session('user.bio','Talk, More Code 💻')}}
+            </p>
         </div>
         <!-- / User Meta -->
     </div>
@@ -47,7 +49,7 @@
     <!-- /Profile Stats -->
 
     <!-- Edit Profile Button (Only visible to the profile owner) -->
-    <a href="./edit-profile.html" type="button"
+    <a href="{{ route('profile.edit') }}" type="button"
         class="-m-2 flex gap-2 items-center rounded-full px-4 py-2 font-semibold bg-gray-100 hover:bg-gray-200 text-gray-700">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
             stroke="currentColor" class="w-5 h-5">

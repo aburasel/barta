@@ -9,9 +9,9 @@
 @section('styles')
     @include('main.partials.style')
 @endsection
-@section('nav')
+{{-- @section('nav')
     @include('main.partials.nav')
-@endsection
+@endsection --}}
 @section('cover_content')
     @include('main.partials.cover_content')
 @endsection
