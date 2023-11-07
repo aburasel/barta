@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\PersonNameRules;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UserRegistrationRequest extends FormRequest
@@ -22,10 +23,10 @@ class UserRegistrationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "first_name"=> ['required','max:16','alpha_dash'],
-            "last_name"=> ['required','max:16','alpha_dash'],
-            "email"=> ['required','email','max:64'],
-            "password"=> ['required','max:32'],
+            "first_name" => ['required', 'max:16', new PersonNameRules],
+            "last_name" => ['required', 'max:16', new PersonNameRules],
+            "email" => ['required', 'email', 'unique:users', 'max:64'],
+            "password" => ['required', 'max:32'],
         ];
     }
 }

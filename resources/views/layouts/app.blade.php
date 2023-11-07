@@ -5,12 +5,24 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@yield('title', 'Barta')</title>
-    @yield('links')
 
+    @section('links')
+        <script src="https://cdn.tailwindcss.com"></script>
 
-    @section('styles')
-        @yield('styles')
+        <!-- AlpineJS CDN -->
+        <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+        {{-- @yield('links') --}}
     @show
+
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>    
 
 </head>
 
@@ -109,13 +121,15 @@
                                 class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
                                 role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button"
                                 tabindex="-1">
-                                <a href="{{route('profile')}}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                    role="menuitem" tabindex="-1" id="user-menu-item-0">Your Profile</a>
-                                <a href="{{route('profile.edit')}}"
+                                <a href="{{ route('profile') }}"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem"
+                                    tabindex="-1" id="user-menu-item-0">Your Profile</a>
+                                <a href="{{ route('profile.edit') }}"
                                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem"
                                     tabindex="-1" id="user-menu-item-1">Edit Profile</a>
-                                <a href="{{route('auth.logout')}}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                    role="menuitem" tabindex="-1" id="user-menu-item-2">Sign out</a>
+                                <a href="{{ route('auth.logout') }}"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem"
+                                    tabindex="-1" id="user-menu-item-2">Sign out</a>
                             </div>
                         </div>
                     </div>
@@ -212,7 +226,7 @@
     </header>
 
     <main class="container max-w-2xl mx-auto space-y-8 mt-8 px-2 min-h-screen">
-        @yield('cover_content')
+        @yield('content')
 
         <!-- Barta Create Post Card -->
         @yield('post_card')

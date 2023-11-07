@@ -71,5 +71,5 @@
 
 <p class="mt-10 text-center text-sm text-gray-500">
     Already a member?
-    <a href="./login.html" class="font-semibold leading-6 text-black hover:text-black">Sign In</a>
+    <a href="{{route('login')}}" class="font-semibold leading-6 text-black hover:text-black">Sign In</a>
 </p>

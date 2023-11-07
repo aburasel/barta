@@ -5,9 +5,19 @@
     <meta charset="UTF-8" />
     <title>@yield('title', 'Barta')</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    @section('styles')
-        @yield('common_styles')
+    @section('links')
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
     @show
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+
+
     {{-- Note @show used. Not @endsection --}}
 </head>
 

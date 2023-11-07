@@ -14,6 +14,6 @@ class AppController extends Controller
             return redirect()->route("login");
         }
         //session()->flush();
-        return view("index");
+        return view("home.index");
     }
 }

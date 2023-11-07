@@ -11,7 +11,7 @@ use Illuminate\View\View;
 
 class AuthController extends Controller
 {
-    public function index(): View
+    public function login(): View
     {
         if (Session::has("user")) {
             return redirect()->route("dashboard");
@@ -19,13 +19,7 @@ class AuthController extends Controller
         return view("auth.login");
     }
 
-    public function create()
-    {
-        if (Session::has("user")) {
-            return redirect()->route("dashboard");
-        }
-        return view("auth.register");
-    }
+    
 
     public function postLogin(UserLoginRequest $request)
     {
@@ -48,13 +42,25 @@ class AuthController extends Controller
         return redirect()->route("login")->with("error", "Invalid email or password");
 
     }
+    
     public function logOut()
     {
         Session::flush();
         return redirect()->route("login");
     }
 
-    public function store(UserRegistrationRequest $request)
+    /**
+     * registration
+     */
+    public function createRegister()
+    {
+        if (Session::has("user")) {
+            return redirect()->route("dashboard");
+        }
+        return view("auth.register");
+    }
+
+    public function storeRegister(UserRegistrationRequest $request)
     {
         $validated = $request->validated();
 

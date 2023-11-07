@@ -16,15 +16,15 @@ use Illuminate\Support\Facades\Route;
 |
  */
 
-Route::get('user/register', [AuthController::class, "create"]);
-Route::post('user/register', [AuthController::class, "store"])->name("auth.register");
+Route::get('user/register', [AuthController::class, "createRegister"]);
+Route::post('user/register', [AuthController::class, "storeRegister"])->name("auth.register");
+Route::get('/logout', [AuthController::class, "logOut"])->name("auth.logout");
 
-
-Route::get('/login', [AuthController::class, 'index'])->name('login');
+Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/post-login', [AuthController::class, 'postLogin'])->name('auth.login');
 
 Route::get('user/profile', [ProfileController::class, "profile"])->name("profile");
-Route::get('user/edit-profile', [ProfileController::class, "editProfile"])->name("profile.edit");
-Route::post('user/profile', [ProfileController::class, "postProfile"])->name("profile.post");
-Route::get('/logout', [AuthController::class, "logOut"])->name("auth.logout");
+Route::get('user/edit-profile', [ProfileController::class, "create"])->name("profile.edit");
+Route::post('user/profile', [ProfileController::class, "store"])->name("profile.post");
+
 Route::get('/', [AppController::class, "index"])->name("dashboard");

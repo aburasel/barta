@@ -4,8 +4,7 @@
     Registration
 @endsection
 
-@section('styles')
-    @include('auth.partials.styles')
+@section('links')
     @parent
     {{-- Add any other style needed here --}}
 @endsection

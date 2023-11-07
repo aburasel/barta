@@ -57,5 +57,5 @@
 
 <p class="mt-10 text-center text-sm text-gray-500">
     Don't have an account yet?
-    <a href="./register.html" class="font-semibold leading-6 text-black hover:text-black">Sign Up</a>
+    <a href="{{route('auth.register')}}" class="font-semibold leading-6 text-black hover:text-black">Sign Up</a>
 </p>
