@@ -3,23 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserLoginRequest;
-use App\Http\Requests\UserRegistrationRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\View\View;
 
-class AuthController extends Controller
+class LoginController extends Controller
 {
-    public function login(): View
+
+    public function index(): View
     {
         if (Session::has("user")) {
             return redirect()->route("dashboard");
         }
         return view("auth.login");
     }
-
-    
 
     public function postLogin(UserLoginRequest $request)
     {
@@ -42,47 +40,10 @@ class AuthController extends Controller
         return redirect()->route("login")->with("error", "Invalid email or password");
 
     }
-    
+
     public function logOut()
     {
         Session::flush();
         return redirect()->route("login");
-    }
-
-    /**
-     * registration
-     */
-    public function createRegister()
-    {
-        if (Session::has("user")) {
-            return redirect()->route("dashboard");
-        }
-        return view("auth.register");
-    }
-
-    public function storeRegister(UserRegistrationRequest $request)
-    {
-        $validated = $request->validated();
-
-        $id = DB::table("users")->insertGetId([
-            "first_name" => $validated["first_name"],
-            "last_name" => $validated["last_name"],
-            "email" => $validated["email"],
-            "password" => bcrypt($validated["password"]),
-            "created_at" => now(),
-        ]);
-
-        if ($id) {
-            Session::put("user", [
-                'id' => $id,
-                "first_name" => $validated['first_name'],
-                'last_name' => $validated['last_name'],
-                'email' => $validated['email'],
-            ]);
-            return redirect()->route("dashboard")->with("errors", "Error happend");
-        } else {
-            return redirect()->route("user.register")->with("success", "");
-        }
-
     }
 }

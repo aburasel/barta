@@ -1,8 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Session;
 
 class AppController extends Controller

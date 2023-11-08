@@ -1,5 +1,5 @@
 {{ session('error') }}
-<form action="{{ route('profile.post') }}" method="POST" novalidate>
+<form action="{{ route('profile.post') }}" method="POST">
     @csrf
     <div class="space-y-12">
         <div class="border-b border-gray-900/10 pb-12">

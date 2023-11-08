@@ -1,4 +1,4 @@
-<form class="space-y-6" action="{{ route('auth.login') }}" method="POST" novalidate>
+<form class="space-y-6" action="{{ route('auth.login') }}" method="POST">
     @csrf
     <ul class="text-red-500 text-xs">
 
