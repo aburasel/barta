@@ -19,7 +19,9 @@ class PostController extends Controller
         ->select("users.id","users.first_name","users.last_name","posts.*")
         ->orderBy("posts.created_at","desc")->get();
 
-        echo Carbon::date_diff($posts->created_at, Carbon::now());
+
+
+
 
         return view("home.index", ['user' => $user,'posts'=> $posts]);
     }

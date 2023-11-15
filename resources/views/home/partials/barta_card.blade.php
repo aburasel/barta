@@ -99,12 +99,10 @@ class="bg-white border-2 border-black rounded-lg shadow mx-auto max-w-none px-4 
     </p>
   </div>
 </a>
-@php
-   echo $post->created_at->diffInMinutes(\Carbon\Carbon::now());
-@endphp
+
 <!-- Date Created & View Stat -->
 <div class="flex items-center gap-2 text-gray-500 text-xs my-2">
-  <span class="">6 minutes ago</span>
+  <span class="">{{timeDifferenceInWord($post->created_at)}}</span>
   <span class="">•</span>
   <span>450 views</span>
 </div>
