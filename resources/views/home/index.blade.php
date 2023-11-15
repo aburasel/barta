@@ -7,14 +7,16 @@
     @include('profile.partials.nav')
 @endsection --}}
 @section('content')
-    @include('home.partials.content')
+    {{-- @include('home.partials.content') --}}
+    {!!displayAlert()!!}
 @endsection
-{{-- @section('post_card')
-    @include('profile.partials.post_card')
+
+@section('post_card')
+    @include('home.partials.post_card')
 @endsection
-@section('user_post')
-    @include('profile.partials.user_post')
-@endsection --}}
+@section('barta_card')
+    @include('home.partials.barta_card')
+@endsection
 @section('footer')
     @include('home.partials.footer')
 @endsection

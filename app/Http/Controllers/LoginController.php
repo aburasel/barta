@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserLoginRequest;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\View\View;
 
@@ -13,37 +13,31 @@ class LoginController extends Controller
 
     public function index(): View
     {
-        if (Session::has("user")) {
-            return redirect()->route("dashboard");
-        }
         return view("auth.login");
     }
 
     public function postLogin(UserLoginRequest $request)
     {
-        $validated = $request->validated();
-        $user = DB::table("users")
-            ->where("email", $validated["email"])
-            ->first();
-        if ($user) {
-            if (Hash::check($validated["password"], $user->password)) {
-                Session::put("user", [
-                    'id' => $user->id,
-                    "first_name" => $user->first_name,
-                    'last_name' => $user->last_name,
-                    'email' => $user->email,
-                    'bio' => $user->bio,
-                ]);
-                return redirect()->route("dashboard"); //->with("success", "Welcome");
-            }
+        $credentials = $request->validated();
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+ 
+            return redirect()->route("dashboard");//->intended();
         }
-        return redirect()->route("login")->with("error", "Invalid email or password");
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ])->onlyInput('email');
 
     }
 
-    public function logOut()
+    public function logOut(Request $request)
     {
-        Session::flush();
-        return redirect()->route("login");
+        Auth::logout();
+ 
+        $request->session()->invalidate();
+     
+        $request->session()->regenerateToken();
+     
+        return redirect('/');
     }
 }

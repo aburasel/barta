@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Rules\PersonNameRules;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class ProfileRequest extends FormRequest
@@ -23,10 +24,11 @@ class ProfileRequest extends FormRequest
      */
     public function rules(): array
     {
+        
         return [
             "first_name" => ['required', 'max:16', new PersonNameRules],
             "last_name" => ['required', 'max:16', new PersonNameRules],
-            "email" => ['required', 'email', Rule::unique('users')->ignore(session('user.id')), 'max:64'],
+            "email" => ['required', 'email', Rule::unique('users')->ignore(Auth::user()->id), 'max:64'],
             "password" => ['required', 'max:32'],
             "bio" => ['nullable', 'max:128'],
         ];

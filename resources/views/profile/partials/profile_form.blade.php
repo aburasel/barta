@@ -1,4 +1,7 @@
 {{ session('error') }}
+@php
+@endphp
+
 <form action="{{ route('profile.post') }}" method="POST">
     @csrf
     <div class="space-y-12">
@@ -54,7 +57,7 @@
                         <div class="mt-2">
                             <input type="text" name="first_name" required max="32" id="first_name"
                                 autocomplete="given-name"
-                                value="{{ old('first_name') ? old('first_name') : $first_name }}"
+                                value="{{ old('first_name') ? old('first_name') : $user->first_name }}"
                                 class="block w-full rounded-md border-0 p-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6" />
                             @error('first_name')
                                 <div class="text-red-500 text-xs">
@@ -69,7 +72,7 @@
                             name</label>
                         <div class="mt-2">
                             <input type="text" name="last_name" id="last_name" required max="32"
-                                value="{{ old('last_name') ? old('last_name') : $last_name }}"
+                                value="{{ old('last_name') ? old('last_name') : $user->last_name }}"
                                 autocomplete="family-name"
                                 class="block w-full rounded-md border-0 p-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6" />
                             @error('last_name')
@@ -85,7 +88,7 @@
                             address</label>
                         <div class="mt-2">
                             <input id="email" name="email" type="email" autocomplete="email" required
-                                max="64" value="{{ old('email') ? old('email') : $email }}"
+                                max="64" value="{{ old('email') ? old('email') : $user->email }}"
                                 class="block w-full rounded-md border-0 p-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6" />
                             @error('email')
                                 <div class="text-red-500 text-xs">
@@ -116,7 +119,7 @@
                     <label for="bio" class="block text-sm font-medium leading-6 text-gray-900">Bio</label>
                     <div class="mt-2">
                         <textarea id="bio" name="bio" rows="3" maxlength="128"
-                            class="block w-full rounded-md border-0 p-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6">{{ old('bio') ? old('bio') : $bio }}</textarea>
+                            class="block w-full rounded-md border-0 p-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6">{{ old('bio') ? old('bio') : $user->bio }}</textarea>
                     </div>
                     <p class="mt-3 text-sm leading-6 text-gray-600">
                         Write a few sentences about yourself.

@@ -16,9 +16,9 @@
 
         <!-- User Meta -->
         <div>
-            <h1 class="font-bold md:text-2xl">{{ $first_name }} {{ $last_name }}</h1>
+            <h1 class="font-bold md:text-2xl">{{ $user->first_name }} {{ $user->last_name }}</h1>
             <p class="text-gray-700">
-                {{ $bio ? $bio : 'Talk, More Code 💻' }}
+                {{ $user->bio ? $user->bio : 'Talk, More Code 💻' }}
             </p>
         </div>
         <!-- / User Meta -->

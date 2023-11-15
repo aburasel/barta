@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRegistrationRequest;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Session;
 
 class RegisterController extends Controller
 {
@@ -14,9 +14,6 @@ class RegisterController extends Controller
      */
     public function create()
     {
-        if (Session::has("user")) {
-            return redirect()->route("dashboard");
-        }
         return view("auth.register");
     }
 
@@ -33,15 +30,15 @@ class RegisterController extends Controller
         ]);
 
         if ($id) {
-            Session::put("user", [
-                'id' => $id,
-                "first_name" => $validated['first_name'],
-                'last_name' => $validated['last_name'],
-                'email' => $validated['email'],
-            ]);
-            return redirect()->route("dashboard")->with("errors", "Error happend");
+            $credentials = ["email" => $validated["email"], "password" => $validated["password"]];
+
+            if (Auth::attempt($credentials)) {
+                $request->session()->regenerate();
+                return redirect()->route("dashboard");
+            }
+            return redirect()->route("user.login");
         } else {
-            return redirect()->route("user.register")->with("success", "");
+            return redirect()->route("user.register")->with("errors", "Error happend");
         }
 
     }
