@@ -34,5 +34,7 @@ Route::middleware(["auth"])->group(function () {
     Route::post('user/profile', [ProfileController::class, "store"])->name("profile.post");
     
     Route::get('/', [PostController::class, "index"])->name("dashboard");
-    Route::post('feed/', [PostController::class, "store"])->name("feed.post");
+    Route::post('/feed', [PostController::class, "store"])->name("feed.post");
+    Route::get('feed/{key}', [PostController::class, "postByTags"])->name("feed.tags");
+    Route::get('feed/single/{key}', [PostController::class, "singlePost"])->name("feed.single");
 });
