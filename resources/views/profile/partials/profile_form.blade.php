@@ -66,7 +66,7 @@
                             @enderror
                         </div>
                     </div>
-
+                    <input type="hidden" name="id" value="{{ $user->id }}" />
                     <div class="sm:col-span-3">
                         <label for="last_name" class="block text-sm font-medium leading-6 text-gray-900">Last
                             name</label>
@@ -130,7 +130,7 @@
     </div>
 
     <div class="mt-6 flex items-center justify-end gap-x-6">
-        <a href="{{ route('profile') }}" type="button">
+        <a href="{{ route('profile', $user->id) }}" type="button">
             Cancel
         </a>
         <button type="submit"

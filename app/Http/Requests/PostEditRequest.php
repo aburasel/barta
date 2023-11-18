@@ -2,20 +2,22 @@
 
 namespace App\Http\Requests;
 
-use App\Rules\PersonNameRules;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\Rule;
 
-class ProfileRequest extends FormRequest
+class PostEditRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return Auth::user()->id==$this->request->get("id");
+        $rows = DB::table("posts")->where([
+            "uuid" => $this->route("key"),
+            "user_id" => Auth::user()->id,
+        ])->count()!= 0; //->toRawSql();
+        return $rows != 0;
     }
 
     /**
@@ -25,13 +27,8 @@ class ProfileRequest extends FormRequest
      */
     public function rules(): array
     {
-        
         return [
-            "first_name" => ['required', 'max:16', new PersonNameRules],
-            "last_name" => ['required', 'max:16', new PersonNameRules],
-            "email" => ['required', 'email', Rule::unique('users')->ignore(Auth::user()->id), 'max:64'],
-            "password" => ['required', 'max:32'],
-            "bio" => ['nullable', 'max:128'],
+            "description" => ['required', 'max:4096'],
         ];
     }
 }

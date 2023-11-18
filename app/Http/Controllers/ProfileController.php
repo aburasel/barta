@@ -37,7 +37,7 @@ class ProfileController extends Controller
             ]);
 
         if ($rowsAffected > 0) {
-            return redirect()->route("profile")->with("success", "Profile updated successfully");
+            return redirect()->route("profile",Auth::user()->id)->with("success", "Profile updated successfully");
         } else {
             return redirect()->route("profile.edit")->with("error", "Error happend");
         }
