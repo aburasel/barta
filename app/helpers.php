@@ -5,15 +5,15 @@ use Carbon\CarbonInterface;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 
-if (!function_exists("displayAlert")) {
+if (! function_exists('displayAlert')) {
     function displayAlert()
     {
         if (Session::has('message')) {
-            list($type, $message) = explode('|', Session::get('message'));
+            [$type, $message] = explode('|', Session::get('message'));
 
             if ($type == 'error') {
                 $type = 'red';
-            } else if ($type == 'success') {
+            } elseif ($type == 'success') {
                 $type = 'green';
             } else {
                 $type = 'yellow';
@@ -26,25 +26,27 @@ if (!function_exists("displayAlert")) {
     }
 }
 
-if (!function_exists("timeDifferenceInWord")) {
-    function timeDifferenceInWord(String $startTime)
+if (! function_exists('timeDifferenceInWord')) {
+    function timeDifferenceInWord(string $startTime)
     {
         $startTime = Carbon::parse($startTime);
         $endTime = Carbon::parse(now());
+
         return $totalDuration = $startTime->diffForHumans($endTime, CarbonInterface::DIFF_RELATIVE_TO_NOW);
     }
 }
 
-if (!function_exists("wrapHashTagsByUrl")) {
-    function wrapHashTagsByUrl(String $post)
+if (! function_exists('wrapHashTagsByUrl')) {
+    function wrapHashTagsByUrl(string $post)
     {
         if (Str::contains($post, '#')) {
             return Str::of($post)->replaceMatches(pattern: '/#(\w+)/',
                 replace: function (array $matches){
-                    return '<a href="'.route("feed.tags",str_replace('#','',$matches[0],)).'" class="text-black font-semibold hover:underline">' . $matches[0] . '</a>';
+                    //echo '<pre>';var_dump($matches);
+                    return '<a href="'.route('feed.tags', str_replace('#', '', $matches[0])).'" class="text-black font-semibold hover:underline">'.$matches[0].'</a>';
                 }
             );
-        }else{
+        } else {
             return $post;
         }
 

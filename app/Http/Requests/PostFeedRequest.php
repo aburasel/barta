@@ -22,7 +22,7 @@ class PostFeedRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "description" => ['required', 'max:4096']
+            'description' => ['required', 'max:4096'],
         ];
     }
 }

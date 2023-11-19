@@ -13,10 +13,11 @@ class PostEditRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        $rows = DB::table("posts")->where([
-            "uuid" => $this->route("key"),
-            "user_id" => Auth::user()->id,
-        ])->count()!= 0; //->toRawSql();
+        $rows = DB::table('posts')->where([
+            'uuid' => $this->route('key'),
+            'user_id' => Auth::user()->id,
+        ])->count() != 0; //->toRawSql();
+
         return $rows != 0;
     }
 
@@ -28,7 +29,7 @@ class PostEditRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "description" => ['required', 'max:4096'],
+            'description' => ['required', 'max:4096'],
         ];
     }
 }

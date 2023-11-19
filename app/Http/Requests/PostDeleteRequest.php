@@ -13,10 +13,11 @@ class PostDeleteRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        $rows = DB::table("posts")->where([
-            "uuid" => $this->route("key"),
-            "user_id" => Auth::user()->id,
-        ])->count()!= 0; 
+        $rows = DB::table('posts')->where([
+            'uuid' => $this->route('key'),
+            'user_id' => Auth::user()->id,
+        ])->count() != 0;
+
         return $rows != 0;
     }
 

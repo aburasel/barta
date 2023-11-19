@@ -5,7 +5,6 @@ namespace App\Http\Requests;
 use App\Rules\PersonNameRules;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
 class ProfileRequest extends FormRequest
@@ -15,7 +14,7 @@ class ProfileRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return Auth::user()->id==$this->request->get("id");
+        return Auth::user()->id == $this->request->get('id');
     }
 
     /**
@@ -25,13 +24,13 @@ class ProfileRequest extends FormRequest
      */
     public function rules(): array
     {
-        
+
         return [
-            "first_name" => ['required', 'max:16', new PersonNameRules],
-            "last_name" => ['required', 'max:16', new PersonNameRules],
-            "email" => ['required', 'email', Rule::unique('users')->ignore(Auth::user()->id), 'max:64'],
-            "password" => ['required', 'max:32'],
-            "bio" => ['nullable', 'max:128'],
+            'first_name' => ['required', 'max:16', new PersonNameRules],
+            'last_name' => ['required', 'max:16', new PersonNameRules],
+            'email' => ['required', 'email', Rule::unique('users')->ignore(Auth::user()->id), 'max:64'],
+            'password' => ['required', 'max:32'],
+            'bio' => ['nullable', 'max:128'],
         ];
     }
 }
