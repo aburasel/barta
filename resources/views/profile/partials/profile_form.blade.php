@@ -2,8 +2,9 @@
 @php
 @endphp
 
-<form action="{{ route('profile.post') }}" method="POST">
+<form action="{{ route('profile.update') }}" method="POST">
     @csrf
+    @method('patch')
     <div class="space-y-12">
         <div class="border-b border-gray-900/10 pb-12">
             <h2 class="text-xl font-semibold leading-7 text-gray-900">

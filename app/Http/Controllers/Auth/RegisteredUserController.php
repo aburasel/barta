@@ -50,14 +50,23 @@ class RegisteredUserController extends Controller
             'first_name' => $validated['first_name'],
             'last_name' => $validated['last_name'],
             'email' => $validated['email'],
+            'username' => $validated['username'],
             'password' => bcrypt($validated['password']),
             'created_at' => now(),
         ]);
 
         $registeredUser = DB::table('users')->where('id', $id)->first();
 
-        $user = new User((array) $registeredUser);
-        //dd($user);
+        $user = new User([
+            "first_name" => $registeredUser->first_name,
+            "last_name" => $registeredUser->last_name,
+            "email" => $registeredUser->email,
+            "username" => $registeredUser->username,
+            "password" => $registeredUser->password,
+            "updated_at" => $registeredUser->updated_at,
+            "created_at" => $registeredUser->created_at,
+            "id" => $registeredUser->id
+          ]);
 
         event(new Registered($user));
 
