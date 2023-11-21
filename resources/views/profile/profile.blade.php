@@ -10,11 +10,11 @@
     @include('profile.partials.cover_content')
 @endsection
 {{-- @section('post_card')
-    @include('profile.partials.post_card')
-@endsection
-@section('user_post')
-    @include('profile.partials.user_post')
+    @include('home.partials.post_card')
 @endsection --}}
+@section('barta_card')
+    @include('home.partials.barta_card')
+@endsection
 @section('footer')
     @include('home.partials.footer')
 @endsection

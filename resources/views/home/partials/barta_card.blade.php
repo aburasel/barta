@@ -26,7 +26,7 @@
 
                             <a href="{{ route('profile', $post->user_id) }}"
                                 class="hover:underline text-sm text-gray-500 line-clamp-1">
-                                @todo_later
+                                {{ '@'.$post->username }}
                             </a>
                         </div>
                         <!-- /User Info -->

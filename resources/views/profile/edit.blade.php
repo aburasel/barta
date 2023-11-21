@@ -4,7 +4,7 @@
 @endsection
 
 @section('content')
-    @include('profile.partials.profile_form')
+    @include('profile.partials.profile-form')
     {{-- @include('profile.partials.update-profile-information-form') --}}
     <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
         <div class="max-w-xl">

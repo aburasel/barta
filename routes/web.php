@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -29,9 +30,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
 
-    Route::get('user/profile/{id}', [ProfileController::class, 'profile'])->name('profile');
-    //Route::get('user/edit-profile/', [ProfileController::class, 'create'])->name('profile.edit');
-    Route::post('user/profile', [ProfileController::class, 'store'])->name('profile.post');
+    Route::get('profile/{id}', [ProfileController::class, 'profile'])->name('profile');
     
     
     Route::post('/feed', [PostController::class, 'store'])->name('feed.post');
@@ -40,6 +39,8 @@ Route::middleware('auth')->group(function () {
     Route::get('feed/edit-post/{key}', [PostController::class, 'editPostByUUID'])->name('post.edit');
     Route::post('feed/edit/{key}', [PostController::class, 'storePostByUUID'])->name('post.edit.store');
     Route::get('feed/delete-post/{key}', [PostController::class, 'delete'])->name('post.delete');
+
+    Route::post('/comment', [CommentController::class, 'store'])->name('comment');
 });
 
 require __DIR__.'/auth.php';

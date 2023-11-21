@@ -43,7 +43,8 @@ if (! function_exists('wrapHashTagsByUrl')) {
             return Str::of($post)->replaceMatches(pattern: '/#(\w+)/',
                 replace: function (array $matches){
                     //echo '<pre>';var_dump($matches);
-                    return '<a href="'.route('feed.tags', str_replace('#', '', $matches[0])).'" class="text-black font-semibold hover:underline">'.$matches[0].'</a>';
+                    //return '<a href="'.route('feed.tags', str_replace('#', '', $matches[0])).'" class="text-black font-semibold hover:underline">'.$matches[0].'</a>';
+                    return '<b " class="text-black font-semibold hover:underline">'.$matches[0].'</b>';
                 }
             );
         } else {

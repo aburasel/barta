@@ -17,10 +17,8 @@ class PostController extends Controller
         $user = Auth::user();
         $posts = DB::table('posts')
             ->join('users', 'users.id', '=', 'posts.user_id')
-            ->select('users.id', 'users.first_name', 'users.last_name', 'posts.*')
+            ->select('users.id', 'users.first_name', 'users.last_name','users.username', 'posts.*')
             ->orderBy('posts.created_at', 'desc')->get();
-
-        DB::table('posts')->increment('posts.view_count', 1, []);
 
         return view('home.index', ['user' => $user, 'posts' => $posts]);
     }
@@ -50,7 +48,7 @@ class PostController extends Controller
         $user = Auth::user();
         $posts = DB::table('posts')
             ->join('users', 'users.id', '=', 'posts.user_id')
-            ->select('users.id', 'users.first_name', 'users.last_name', 'posts.*')
+            ->select('users.id', 'users.first_name', 'users.last_name','users.username', 'posts.*')
             ->where('posts.description', 'like', '%#'.$key.'%')
             ->orderBy('posts.created_at', 'desc')->get();
 
@@ -66,7 +64,7 @@ class PostController extends Controller
 
         $post = DB::table('posts')
             ->join('users', 'users.id', '=', 'posts.user_id')
-            ->select('users.id', 'users.first_name', 'users.last_name', 'posts.*')
+            ->select('users.id', 'users.first_name', 'users.last_name','users.username', 'posts.*')
             ->where('posts.uuid', '=', $key)
             ->first();
         if ($post) {
@@ -85,7 +83,7 @@ class PostController extends Controller
         $user = Auth::user();
         $post = DB::table('posts')
             ->join('users', 'users.id', '=', 'posts.user_id')
-            ->select('users.id', 'users.first_name', 'users.last_name', 'posts.*')
+            ->select('users.id', 'users.first_name', 'users.last_name','users.username', 'posts.*')
             ->where('posts.uuid', '=', $key)
             ->first();
         if ($post) {

@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\User;
+use App\Rules\PersonNameRules;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -16,8 +17,12 @@ class ProfileUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($this->user()->id)],
+            'first_name' => ['required', 'max:16', new PersonNameRules],
+            'last_name' => ['required', 'max:16', new PersonNameRules],
+            'email' => ['required', 'email', Rule::unique('users')->ignore($this->user()->id), 'max:64'],
+            'password' => ['required', 'max:32'],
+            'bio' => ['nullable', 'max:128'],
+            'username' => ['required', 'lowercase', 'string', 'lowercase','max:32',Rule::unique('users')->ignore($this->user()->id)],
         ];
     }
 }
