@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Rules\PersonNameRules;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules;
 
 class UserRegistrationRequest extends FormRequest
 {
@@ -25,8 +26,8 @@ class UserRegistrationRequest extends FormRequest
         return [
             'first_name' => ['required', 'max:16', new PersonNameRules],
             'last_name' => ['required', 'max:16', new PersonNameRules],
-            'email' => ['required', 'email', 'unique:users', 'max:64'],
-            'password' => ['required', 'max:32'],
+            'email' => ['required', 'email', 'string', 'lowercase','unique:users', 'max:64'],
+            'password' => ['required', 'max:32', Rules\Password::defaults()],
         ];
     }
 }

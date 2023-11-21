@@ -112,7 +112,7 @@
                                     <span class="sr-only">Open user menu</span>
                                     <img class="h-8 w-8 rounded-full"
                                         src="https://avatars.githubusercontent.com/u/831997"
-                                        alt="{{ $user->first_name }} {{ $user->last_name; }}" />
+                                        alt="{{ $user->first_name }} {{ $user->last_name }}" />
                                 </button>
                             </div>
 
@@ -127,9 +127,16 @@
                                 <a href="{{ route('profile.edit') }}"
                                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem"
                                     tabindex="-1" id="user-menu-item-1">Edit Profile</a>
-                                <a href="{{ route('auth.logout') }}"
-                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem"
-                                    tabindex="-1" id="user-menu-item-2">Sign out</a>
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+
+                                    <x-dropdown-link :href="route('logout')"
+                                        onclick="event.preventDefault();
+                                                            this.closest('form').submit();">
+                                        {{ __('Sign out') }}
+                                    </x-dropdown-link>
+                                </form>
+
                             </div>
                         </div>
                     </div>
@@ -177,10 +184,17 @@
                         <a href="{{ route('profile.edit') }}"
                             class="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800">Edit
                             Profile</a>
-                        <a href="{{ route('auth.logout') }}"
-                            class="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800">Sign
-                            out</a>
-                        
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+
+                                <x-dropdown-link :href="route('logout')"
+                                    onclick="event.preventDefault();
+                                                        this.closest('form').submit();">
+                                    {{ __('Sign out') }}
+                                </x-dropdown-link>
+                            </form>
+                            
+
                     </div>
                 </div>
             </div>
@@ -205,3 +219,40 @@
 </body>
 
 </html>
+
+{{-- <!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+
+        <title>{{ config('app.name', 'Laravel') }}</title>
+
+        <!-- Fonts -->
+        <link rel="preconnect" href="https://fonts.bunny.net">
+        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+
+        <!-- Scripts -->
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    </head>
+    <body class="font-sans antialiased">
+        <div class="min-h-screen bg-gray-100">
+            @include('layouts.navigation')
+
+            <!-- Page Heading -->
+            @if (isset($header))
+                <header class="bg-white shadow">
+                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                        {{ $header }}
+                    </div>
+                </header>
+            @endif
+
+            <!-- Page Content -->
+            <main>
+                {{ $slot }}
+            </main>
+        </div>
+    </body>
+</html> --}}

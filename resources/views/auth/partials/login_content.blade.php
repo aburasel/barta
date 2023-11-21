@@ -1,4 +1,4 @@
-<form class="space-y-6" action="{{ route('auth.login') }}" method="POST">
+<form class="space-y-6" action="{{ route('login') }}" method="POST">
     @csrf
     <ul class="text-red-500 text-xs">
 
@@ -32,7 +32,12 @@
         <div class="flex items-center justify-between">
             <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Password</label>
             <div class="text-sm">
-                <a href="#" class="font-semibold text-black hover:text-black">Forgot password?</a>
+                @if (Route::has('password.request'))
+                <a class="font-semibold text-black hover:text-black" href="{{ route('password.request') }}">
+                    {{ __('Forgot password?') }}
+                </a>
+            @endif
+              
             </div>
         </div>
         <div class="mt-2">
@@ -57,5 +62,5 @@
 
 <p class="mt-10 text-center text-sm text-gray-500">
     Don't have an account yet?
-    <a href="{{route('auth.register')}}" class="font-semibold leading-6 text-black hover:text-black">Sign Up</a>
+    <a href="{{route('register')}}" class="font-semibold leading-6 text-black hover:text-black">Sign Up</a>
 </p>

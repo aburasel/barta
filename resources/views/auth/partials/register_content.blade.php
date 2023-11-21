@@ -1,4 +1,4 @@
-<form class="space-y-6" action="{{ route('auth.register') }}" method="POST">
+<form class="space-y-6" action="{{ route('register') }}" method="POST" novalidate>
     @csrf
     <!-- First Name -->
     {{-- {{ print_r($errors->all()) }} --}}
