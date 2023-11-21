@@ -57,6 +57,7 @@ class RegisteredUserController extends Controller
         $registeredUser = DB::table('users')->where('id', $id)->first();
 
         $user = new User((array) $registeredUser);
+        //dd($user);
 
         event(new Registered($user));
 
