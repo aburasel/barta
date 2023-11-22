@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CommentRequest;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class CommentController extends Controller
 {
@@ -17,13 +17,13 @@ class CommentController extends Controller
                 'user_id' => Auth::user()->id,
                 'created_at' => now(),
             ]);
-            dd($validated);
-        // $id = DB::table('posts')->insertGetId($validated);
-        // if ($id) {
-        //     return redirect()->route('dashboard')->with('message', 'success|Post added successfully');
-        // } else {
-        //     return redirect()->route('dashboard')->withInput()->with('message', 'error|Something went wrong');
-        // }
+        //dd($validated);
+        $isInserted = DB::table('comments')->insert($validated);
+        if ($isInserted) {
+            return redirect()->back()->with('message', 'success|Comment added successfully');
+        } else {
+            return redirect()->back()->with('message', 'error|Something went wrong');
+        }
 
     }
 }

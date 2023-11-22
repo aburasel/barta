@@ -58,15 +58,15 @@ class RegisteredUserController extends Controller
         $registeredUser = DB::table('users')->where('id', $id)->first();
 
         $user = new User([
-            "first_name" => $registeredUser->first_name,
-            "last_name" => $registeredUser->last_name,
-            "email" => $registeredUser->email,
-            "username" => $registeredUser->username,
-            "password" => $registeredUser->password,
-            "updated_at" => $registeredUser->updated_at,
-            "created_at" => $registeredUser->created_at,
-            "id" => $registeredUser->id
-          ]);
+            'first_name' => $registeredUser->first_name,
+            'last_name' => $registeredUser->last_name,
+            'email' => $registeredUser->email,
+            'username' => $registeredUser->username,
+            'password' => $registeredUser->password,
+            'updated_at' => $registeredUser->updated_at,
+            'created_at' => $registeredUser->created_at,
+            'id' => $registeredUser->id,
+        ]);
 
         event(new Registered($user));
 

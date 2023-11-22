@@ -17,10 +17,16 @@ class PostController extends Controller
         $user = Auth::user();
         $posts = DB::table('posts')
             ->join('users', 'users.id', '=', 'posts.user_id')
-            ->select('users.id', 'users.first_name', 'users.last_name','users.username', 'posts.*')
+            ->select('users.id', 'users.first_name', 'users.last_name', 'users.username', 'posts.*')
             ->orderBy('posts.created_at', 'desc')->get();
 
-        return view('home.index', ['user' => $user, 'posts' => $posts]);
+        $perPostCommentCount = DB::table('comments')
+            ->join('posts', 'posts.uuid', '=', 'comments.post_uuid')
+            ->select('posts.uuid', DB::raw('COUNT(*) as numberOfComment'))
+            ->groupBy('posts.uuid')
+            ->get();
+
+        return view('home.index', ['user' => $user, 'posts' => $posts, 'perPostCommentCount' => $perPostCommentCount]);
     }
 
     public function store(PostFeedRequest $request)
@@ -48,7 +54,7 @@ class PostController extends Controller
         $user = Auth::user();
         $posts = DB::table('posts')
             ->join('users', 'users.id', '=', 'posts.user_id')
-            ->select('users.id', 'users.first_name', 'users.last_name','users.username', 'posts.*')
+            ->select('users.id', 'users.first_name', 'users.last_name', 'users.username', 'posts.*')
             ->where('posts.description', 'like', '%#'.$key.'%')
             ->orderBy('posts.created_at', 'desc')->get();
 
@@ -64,13 +70,20 @@ class PostController extends Controller
 
         $post = DB::table('posts')
             ->join('users', 'users.id', '=', 'posts.user_id')
-            ->select('users.id', 'users.first_name', 'users.last_name','users.username', 'posts.*')
+            ->select('users.id', 'users.first_name', 'users.last_name', 'users.username', 'posts.*')
             ->where('posts.uuid', '=', $key)
             ->first();
         if ($post) {
             DB::table('posts')->where('posts.uuid', '=', $key)->increment('posts.view_count', 1, []);
 
-            return view('home.single', ['user' => $user, 'post' => $post]);
+            $comments = DB::table('comments')
+                ->join('users', 'users.id', '=', 'comments.user_id')
+                ->select('users.id as user_id', 'users.first_name', 'users.last_name', 'users.username', 'comments.comment', 'comments.id as comment_id', 'comments.created_at')
+                ->where('comments.post_uuid', '=', $key)
+                ->get();
+
+            //dd($comments);
+            return view('home.single', ['user' => $user, 'post' => $post, 'comments' => $comments]);
         } else {
             return view('errors.404', ['user' => $user]);
         }
@@ -83,7 +96,7 @@ class PostController extends Controller
         $user = Auth::user();
         $post = DB::table('posts')
             ->join('users', 'users.id', '=', 'posts.user_id')
-            ->select('users.id', 'users.first_name', 'users.last_name','users.username', 'posts.*')
+            ->select('users.id', 'users.first_name', 'users.last_name', 'users.username', 'posts.*')
             ->where('posts.uuid', '=', $key)
             ->first();
         if ($post) {

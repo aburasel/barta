@@ -26,8 +26,8 @@ class UserRegistrationRequest extends FormRequest
         return [
             'first_name' => ['required', 'max:16', new PersonNameRules],
             'last_name' => ['required', 'max:16', new PersonNameRules],
-            'email' => ['required', 'email', 'string', 'lowercase','unique:users', 'max:64'],
-            'username' => ['required', 'lowercase', 'string', 'lowercase','unique:users', 'max:32'],
+            'email' => ['required', 'email', 'string', 'lowercase', 'unique:users', 'max:64'],
+            'username' => ['required', 'lowercase', 'string', 'lowercase', 'unique:users', 'max:32'],
             'password' => ['required', 'max:32', Rules\Password::defaults()],
         ];
     }

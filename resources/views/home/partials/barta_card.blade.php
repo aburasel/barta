@@ -1,7 +1,6 @@
 <!-- Newsfeed -->
 <section id="newsfeed" class="space-y-6">
     <!-- Barta Card -->
-
     @foreach ($posts as $post)
         <article class="bg-white border-2 border-black rounded-lg shadow mx-auto max-w-none px-4 py-5 sm:px-6">
             <!-- Barta Card Top -->
@@ -26,7 +25,7 @@
 
                             <a href="{{ route('profile', $post->user_id) }}"
                                 class="hover:underline text-sm text-gray-500 line-clamp-1">
-                                {{ '@'.$post->username }}
+                                {{ '@' . $post->username }}
                             </a>
                         </div>
                         <!-- /User Info -->
@@ -100,8 +99,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 01-.923 1.785A5.969 5.969 0 006 21c1.282 0 2.47-.402 3.445-1.087.81.22 1.668.337 2.555.337z" />
                             </svg>
-
-                            <p>0</p>
+                            <p>{{ $perPostCommentCount->firstWhere('uuid',$post->uuid)->numberOfComment ?? 0}}</p>
                         </a>
                         <!-- /Comment Button -->
                     </div>

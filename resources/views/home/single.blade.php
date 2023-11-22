@@ -7,7 +7,6 @@
     @include('profile.partials.nav')
 @endsection --}}
 @section('content')
-{!!displayAlert()!!}
     @include('home.partials.single_post')
 @endsection
 @section('footer')

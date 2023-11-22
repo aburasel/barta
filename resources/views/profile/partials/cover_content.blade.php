@@ -14,7 +14,7 @@
         <div>
             <h1 class="font-bold md:text-2xl">{{ $user->first_name }} {{ $user->last_name }}</h1>
             <p class="text-gray-700">
-                {{ $user->bio ? $user->bio : 'Talk, More Code 💻' }}
+                {{ $user->bio ? $user->bio : 'No intro 💻' }}
             </p>
         </div>
         <!-- / User Meta -->
@@ -32,7 +32,7 @@
 
         <!-- Total Comments Count -->
         <div class="flex flex-col justify-center items-center">
-            <h4 class="sm:text-xl font-bold">14</h4>
+            <h4 class="sm:text-xl font-bold">{{ $counts["noOfComment"] }}</h4>
             <p class="text-gray-600">Comments</p>
         </div>
     </div>

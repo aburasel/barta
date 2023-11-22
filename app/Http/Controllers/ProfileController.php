@@ -15,19 +15,28 @@ class ProfileController extends Controller
     {
         $id = $request->route('id');
 
-        $user = DB::table("users")->where("id", $id)->first(); //Auth::user();
+        $user = DB::table('users')->where('id', $id)->first(); //Auth::user();
         if ($user == null) {
             return view('errors.404', ['user' => $user]);
         }
 
         $posts = DB::table('posts')
             ->join('users', 'users.id', '=', 'posts.user_id')
-            ->select('users.id', 'users.first_name', 'users.last_name','users.username', 'posts.*')
-            ->where('posts.user_id','=', $id)
+            ->select('users.id', 'users.first_name', 'users.last_name', 'users.username', 'posts.*')
+            ->where('posts.user_id', '=', $id)
             ->orderBy('posts.created_at', 'desc')->get();
-        $count=["noOfPost"=>count($posts)];
+        $noOfComment = DB::table('comments')
+            ->where('comments.user_id', '=', $id)->count();
 
-        return view('profile.profile', ['user' => $user, 'posts' => $posts, 'counts'=>$count]);
+        $count = ['noOfPost' => count($posts), 'noOfComment' => $noOfComment];
+
+        $perPostCommentCount = DB::table('comments')
+            ->join('posts', 'posts.uuid', '=', 'comments.post_uuid')
+            ->select('posts.uuid', DB::raw('COUNT(*) as numberOfComment'))
+            ->groupBy('posts.uuid')
+            ->get();
+
+        return view('profile.profile', ['user' => $user, 'posts' => $posts, 'counts' => $count, 'perPostCommentCount' => $perPostCommentCount]);
     }
 
     /**
