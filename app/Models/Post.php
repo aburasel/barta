@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Eloquent;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,6 +12,7 @@ class Post extends Model
 {
     use HasFactory;
     use HasUuids;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -48,7 +48,7 @@ class Post extends Model
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class,'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function comments(): HasMany
@@ -59,7 +59,7 @@ class Post extends Model
     public static function boot(): void
     {
         parent::boot();
-        Model::preventLazyLoading(!app()->isProduction());
+        Model::preventLazyLoading(! app()->isProduction());
         Model::preventSilentlyDiscardingAttributes(app()->isLocal());
     }
 }

@@ -33,12 +33,12 @@ class RegisteredUserController extends Controller
         $validatedAfterMerge = array_merge(
             $validated,
             [
-                'avatar' =>config('constants.DEFAULT_AVATAR_IMAGE_PATH'),
+                'avatar' => config('constants.DEFAULT_AVATAR_IMAGE_PATH'),
             ]
         );
-        
+
         $registeredUser = User::create($validatedAfterMerge);
-        
+
         event(new Registered($registeredUser));
 
         Auth::login($registeredUser);

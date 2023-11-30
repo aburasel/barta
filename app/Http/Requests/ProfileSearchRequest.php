@@ -22,7 +22,7 @@ class ProfileSearchRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'search' => [ 'required', 'max:32','string']
+            'search' => ['required', 'max:32', 'string'],
         ];
     }
 }

@@ -51,15 +51,14 @@ class ProfileController extends Controller
     {
         $validated = $request->validated();
 
-        
-        $fields=[
+        $fields = [
             'first_name' => $validated['first_name'],
             'last_name' => $validated['last_name'],
             'email' => $validated['email'],
             'password' => bcrypt($validated['password']),
             'username' => $validated['username'],
             'bio' => $validated['bio'],
-            'avatar' =>config('constants.DEFAULT_AVATAR_IMAGE_PATH'),
+            'avatar' => config('constants.DEFAULT_AVATAR_IMAGE_PATH'),
             'updated_at' => now(),
         ];
 

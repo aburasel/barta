@@ -41,7 +41,7 @@ class Comment extends Model
     public static function boot(): void
     {
         parent::boot();
-        Model::preventLazyLoading(!app()->isProduction());
+        Model::preventLazyLoading(! app()->isProduction());
         Model::preventSilentlyDiscardingAttributes(app()->isLocal());
     }
 

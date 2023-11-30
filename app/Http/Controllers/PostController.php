@@ -18,6 +18,7 @@ class PostController extends Controller
         $posts = Post::with('user:id,first_name,last_name,username,avatar')
             ->orderByDesc('created_at')
             ->withCount('comments')->get('posts.*');
+
         return view('home.index', ['user' => $user, 'posts' => $posts]);
     }
 
@@ -59,7 +60,7 @@ class PostController extends Controller
         $posts = DB::table('posts')
             ->join('users', 'users.id', '=', 'posts.user_id')
             ->select('users.id', 'users.first_name', 'users.last_name', 'users.username', 'posts.*')
-            ->where('posts.description', 'like', '%#' . $key . '%')
+            ->where('posts.description', 'like', '%#'.$key.'%')
             ->orderBy('posts.created_at', 'desc')->get();
 
         //DB::table("posts")->increment('posts.view_count', 1, []);
@@ -85,6 +86,7 @@ class PostController extends Controller
 
         if ($post) {
             $post->increment('view_count');
+
             return view('home.single', ['user' => $user, 'post' => $post]);
         } else {
             return view('errors.404', ['user' => $user]);

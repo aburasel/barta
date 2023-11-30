@@ -4,8 +4,8 @@ namespace App\Http\Requests;
 
 use App\Rules\PersonNameRules;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules\File;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\File;
 
 class ProfileUpdateRequest extends FormRequest
 {
