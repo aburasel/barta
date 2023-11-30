@@ -8,11 +8,7 @@ use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 
 class RegisteredUserController extends Controller
@@ -32,45 +28,20 @@ class RegisteredUserController extends Controller
      */
     public function store(UserRegistrationRequest $request): RedirectResponse
     {
-        // $request->validate([
-        //     'name' => ['required', 'string', 'max:255'],
-        //     'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
-        //     'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        // ]);
-
-        // $user = User::create([
-        //     'name' => $request->name,
-        //     'email' => $request->email,
-        //     'password' => Hash::make($request->password),
-        // ]);
 
         $validated = $request->validated();
+        $validatedAfterMerge = array_merge(
+            $validated,
+            [
+                'avatar' =>config('constants.DEFAULT_AVATAR_IMAGE_PATH'),
+            ]
+        );
+        
+        $registeredUser = User::create($validatedAfterMerge);
+        
+        event(new Registered($registeredUser));
 
-        $id = DB::table('users')->insertGetId([
-            'first_name' => $validated['first_name'],
-            'last_name' => $validated['last_name'],
-            'email' => $validated['email'],
-            'username' => $validated['username'],
-            'password' => bcrypt($validated['password']),
-            'created_at' => now(),
-        ]);
-
-        $registeredUser = DB::table('users')->where('id', $id)->first();
-
-        $user = new User([
-            'first_name' => $registeredUser->first_name,
-            'last_name' => $registeredUser->last_name,
-            'email' => $registeredUser->email,
-            'username' => $registeredUser->username,
-            'password' => $registeredUser->password,
-            'updated_at' => $registeredUser->updated_at,
-            'created_at' => $registeredUser->created_at,
-            'id' => $registeredUser->id,
-        ]);
-
-        event(new Registered($user));
-
-        Auth::login($user);
+        Auth::login($registeredUser);
 
         return redirect(RouteServiceProvider::HOME);
     }

@@ -7,7 +7,6 @@
     @include('profile.partials.nav')
 @endsection --}}
 @section('content')
-    {{-- @include('home.partials.content') --}}
     {!!displayAlert()!!}
 @endsection
 

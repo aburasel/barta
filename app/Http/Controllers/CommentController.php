@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CommentRequest;
+use App\Models\Comment;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class CommentController extends Controller
 {
@@ -17,8 +17,8 @@ class CommentController extends Controller
                 'user_id' => Auth::user()->id,
                 'created_at' => now(),
             ]);
-        //dd($validated);
-        $isInserted = DB::table('comments')->insert($validated);
+
+        $isInserted = Comment::create($validated);
         if ($isInserted) {
             return redirect()->back()->with('message', 'success|Comment added successfully');
         } else {

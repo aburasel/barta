@@ -1,8 +1,6 @@
 {{ session('error') }}
-@php
-@endphp
 
-<form action="{{ route('profile.update') }}" method="POST">
+<form action="{{ route('profile.update') }}"  enctype="multipart/form-data" method="POST">
     @csrf
     @method('patch')
     <div class="space-y-12">
@@ -14,9 +12,29 @@
                 This information will be displayed publicly so be careful what you
                 share.
             </p>
-
+            <div class="col-span-full mt-10 pb-10">
+                <label for="photo" class="block text-sm font-medium leading-6 text-gray-900">Photo</label>
+                <div class="mt-2 flex items-center gap-x-3">
+                    <input class="hidden" type="file" name="avatar" id="avatar" />
+                    @php
+                    if(is_null($user->avatar)){
+                        $path=config('constants.DEFAULT_AVATAR_IMAGE_PATH');
+                    }else{
+                        $path= $user->avatar;
+                    }
+                    @endphp
+                    <img class="h-32 w-32 rounded-full" src="{{ asset('storage/'.$path)}}"
+                        alt="{{ $user->getFullName() }}" />
+                    <label for="avatar">
+                        <div
+                            class="rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                            Change
+                        </div>
+                    </label>
+                </div>
+            </div>
             <div class="mt-10 border-b border-gray-900/10 pb-12">
-            
+
                 <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                     <div class="sm:col-span-3">
                         <label for="first_name" class="block text-sm font-medium leading-6 text-gray-900">First

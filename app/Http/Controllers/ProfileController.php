@@ -3,40 +3,35 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
-    public function profile(Request $request): View
+    public function profile(Request $request) //
     {
         $id = $request->route('id');
 
-        $user = DB::table('users')->where('id', $id)->first(); //Auth::user();
+        $user = User::where('id', $id)->first();
         if ($user == null) {
             return view('errors.404', ['user' => $user]);
         }
 
-        $posts = DB::table('posts')
-            ->join('users', 'users.id', '=', 'posts.user_id')
-            ->select('users.id', 'users.first_name', 'users.last_name', 'users.username', 'posts.*')
-            ->where('posts.user_id', '=', $id)
-            ->orderBy('posts.created_at', 'desc')->get();
-        $noOfComment = DB::table('comments')
-            ->where('comments.user_id', '=', $id)->count();
+        $user = User::where('id', '=', $id)
+            ->withCount(['posts'])
+            ->withCount(['comments'])
+            ->first();
 
-        $count = ['noOfPost' => count($posts), 'noOfComment' => $noOfComment];
+        $posts = Post::with('user:id,first_name,last_name,username')
+            ->where('user_id', '=', $id)
+            ->withCount('comments')
+            ->get('posts.*');
 
-        $perPostCommentCount = DB::table('comments')
-            ->join('posts', 'posts.uuid', '=', 'comments.post_uuid')
-            ->select('posts.uuid', DB::raw('COUNT(*) as numberOfComment'))
-            ->groupBy('posts.uuid')
-            ->get();
-
-        return view('profile.profile', ['user' => $user, 'posts' => $posts, 'counts' => $count, 'perPostCommentCount' => $perPostCommentCount]);
+        return view('profile.profile', ['user' => $user, 'posts' => $posts]);
     }
 
     /**
@@ -55,22 +50,28 @@ class ProfileController extends Controller
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
         $validated = $request->validated();
-        //$request->user()->fill($validated);
 
-        // if ($request->user()->isDirty('email')) {
-        //     $request->user()->email_verified_at = null;
-        // }
-        $rowsAffected = DB::table('users')
-            ->where('id', '=', Auth::user()->id)
-            ->update([
-                'first_name' => $validated['first_name'],
-                'last_name' => $validated['last_name'],
-                'email' => $validated['email'],
-                'password' => bcrypt($validated['password']),
-                'username' => $validated['username'],
-                'bio' => $validated['bio'],
-                'updated_at' => now(),
-            ]);
+        
+        $fields=[
+            'first_name' => $validated['first_name'],
+            'last_name' => $validated['last_name'],
+            'email' => $validated['email'],
+            'password' => bcrypt($validated['password']),
+            'username' => $validated['username'],
+            'bio' => $validated['bio'],
+            'avatar' =>config('constants.DEFAULT_AVATAR_IMAGE_PATH'),
+            'updated_at' => now(),
+        ];
+
+        if ($request->hasFile('avatar')) {
+            if ($request->file('avatar')->isValid()) {
+                $imagePath = $request->avatar->store(config('constants.AVATAR_IMAGE_PATH'), 'public');
+                $fields['avatar'] = $imagePath;
+            }
+        }
+
+        $rowsAffected = User::where('id', '=', Auth::user()->id)
+            ->update($fields);
 
         //$request->user()->save();
         if ($rowsAffected > 0) {

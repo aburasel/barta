@@ -6,13 +6,13 @@
         <!-- Avatar -->
         <div class="relative">
             <img class="w-32 h-32 rounded-full border-2 border-gray-800"
-                src="https://avatars.githubusercontent.com/u/831997"
-                alt="{{ $user->first_name }} {{ $user->last_name }}" />
+                src="{{ asset('storage/'.$user->avatar)}}"
+                alt="{{ $user->getFullName() }}" />
             <!--            <span class="bottom-2 right-4 absolute w-3.5 h-3.5 bg-green-400 border-2 border-white dark:border-gray-800 rounded-full"></span>-->
         </div>
         <!-- /Avatar -->
         <div>
-            <h1 class="font-bold md:text-2xl">{{ $user->first_name }} {{ $user->last_name }}</h1>
+            <h1 class="font-bold md:text-2xl">{{$user->getFullName() }}</h1>
             <p class="text-gray-700">
                 {{ $user->bio ? $user->bio : 'No intro 💻' }}
             </p>
@@ -26,13 +26,13 @@
     <div class="flex flex-row gap-16 justify-center text-center items-center">
         <!-- Total Posts Count -->
         <div class="flex flex-col justify-center items-center">
-            <h4 class="sm:text-xl font-bold">{{ $counts["noOfPost"] }}</h4>
+            <h4 class="sm:text-xl font-bold">{{$user->posts_count}}</h4>
             <p class="text-gray-600">Posts</p>
         </div>
 
         <!-- Total Comments Count -->
         <div class="flex flex-col justify-center items-center">
-            <h4 class="sm:text-xl font-bold">{{ $counts["noOfComment"] }}</h4>
+            <h4 class="sm:text-xl font-bold">{{ $user->comments_count }}</h4>
             <p class="text-gray-600">Comments</p>
         </div>
     </div>

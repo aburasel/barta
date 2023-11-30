@@ -14,7 +14,7 @@ class PostEditRequest extends FormRequest
     public function authorize(): bool
     {
         $rows = DB::table('posts')->where([
-            'uuid' => $this->route('key'),
+            'id' => $this->route('key'),
             'user_id' => Auth::user()->id,
         ])->count() != 0; //->toRawSql();
 

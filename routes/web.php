@@ -3,6 +3,7 @@
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProfileSearchController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -35,6 +36,8 @@ Route::middleware('auth')->group(function () {
     Route::get('feed/edit-post/{key}', [PostController::class, 'editPostByUUID'])->name('post.edit');
     Route::post('feed/edit/{key}', [PostController::class, 'storePostByUUID'])->name('post.edit.store');
     Route::get('feed/delete-post/{key}', [PostController::class, 'delete'])->name('post.delete');
+
+    Route::post('profile/search/', [ProfileSearchController::class, 'searchProfile'])->name('profile.search');
 
     Route::post('/comment', [CommentController::class, 'store'])->name('comment');
 });

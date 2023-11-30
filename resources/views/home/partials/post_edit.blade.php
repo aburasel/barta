@@ -2,7 +2,7 @@
 @error('errors')
 {{ dd($errors) }}
 @enderror
-<form method="POST" enctype="multipart/form-data" action="{{ route('post.edit.store',$post->uuid) }}"
+<form method="POST" enctype="multipart/form-data" action="{{ route('post.edit.store',$post->id) }}"
 
     class="bg-white border-2 border-black rounded-lg shadow mx-auto max-w-none px-4 py-5 sm:px-6 space-y-3">
     @csrf

@@ -39,8 +39,17 @@
                             </a>
                         </div>
                     </div>
-                    <div class="hidden sm:ml-6 sm:flex gap-2 sm:items-center">
+                    <!-- Search input -->
+                    <form action="{{ route('profile.search') }}" method="POST" class="flex items-center">
+                        @csrf
+                        <input type="text" name ="search" placeholder="Search..." required
+                            class="border-2 border-gray-300 bg-white h-10 px-5 pr-10 rounded-full text-sm focus:outline-none" value=""/>
+                          
                         
+                        <input type="submit" style="display:none"/>
+                    </form>
+                    <div class="hidden sm:ml-6 sm:flex gap-2 sm:items-center">
+
                         <!-- Profile dropdown -->
                         <div class="relative ml-3" x-data="{ open: false }">
                             <div>
@@ -49,8 +58,7 @@
                                     id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                                     <span class="sr-only">Open user menu</span>
                                     <img class="h-8 w-8 rounded-full"
-                                        src="https://avatars.githubusercontent.com/u/831997"
-                                        
+                                        src="{{ asset('storage/' . auth()->user()->avatar) }}"
                                         alt="{{ auth()->user()->first_name }} {{ auth()->user()->last_name }}" />
                                 </button>
                             </div>
@@ -109,7 +117,7 @@
                     <div class="flex items-center px-4">
                         <div>
                             <div class="text-base font-medium text-gray-800">
-                                {{ auth()->user()->first_name }} {{auth()->user()->last_name }}
+                                {{ auth()->user()->first_name }} {{ auth()->user()->last_name }}
                             </div>
                             <div class="text-sm font-medium text-gray-500">
                                 {{ auth()->user()->email }}
@@ -123,16 +131,16 @@
                         <a href="{{ route('profile.edit') }}"
                             class="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800">Edit
                             Profile</a>
-                            <form method="POST" action="{{ route('logout') }}">
-                                @csrf
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
 
-                                <x-dropdown-link :href="route('logout')"
-                                    onclick="event.preventDefault();
+                            <x-dropdown-link :href="route('logout')"
+                                onclick="event.preventDefault();
                                                         this.closest('form').submit();">
-                                    {{ __('Sign out') }}
-                                </x-dropdown-link>
-                            </form>
-                            
+                                {{ __('Sign out') }}
+                            </x-dropdown-link>
+                        </form>
+
 
                     </div>
                 </div>

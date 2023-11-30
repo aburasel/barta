@@ -5,16 +5,22 @@
         <header>
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-3">
+                    <!-- User Avatar -->
+                    <div class="flex-shrink-0">
+                        <img class="h-10 w-10 rounded-full object-cover" src="{{ asset('storage/' . $post->user->avatar) }}"
+                            alt="{{ $post->user->getFullName() }}" />
+                    </div>
+                    <!-- User Avatar -->
                     <!-- User Info -->
                     <div class="text-gray-900 flex flex-col min-w-0 flex-1">
                         <a href="{{ route('profile', $post->user_id) }}"
                             class="hover:underline font-semibold line-clamp-1">
-                            {{ $post->first_name }} {{ $post->last_name }}
+                            {{ $post->user->getFullName() }}
                         </a>
 
                         <a href="{{ route('profile', $post->user_id) }}"
                             class="hover:underline text-sm text-gray-500 line-clamp-1">
-                            {{ '@' . $post->username }}
+                            {{ '@' . $post->user->username }}
                         </a>
                     </div>
                     <!-- /User Info -->
@@ -41,10 +47,10 @@
                                 class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
                                 role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button"
                                 tabindex="-1" style="display: none;">
-                                <a href="{{ route('post.edit', $post->uuid) }}"
+                                <a href="{{ route('post.edit', $post->id) }}"
                                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem"
                                     tabindex="-1" id="user-menu-item-0">Edit</a>
-                                <a href="{{ route('post.delete', $post->uuid) }}"
+                                <a href="{{ route('post.delete', $post->id) }}"
                                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem"
                                     tabindex="-1" id="user-menu-item-1">Delete</a>
                             </div>
@@ -66,7 +72,7 @@
         <div class="flex items-center gap-2 text-gray-500 text-xs my-2">
             <span class="">{{ timeDifferenceInWord($post->created_at) }}</span>
             <span class="">•</span>
-            <span>{{ count($comments) }} comments</span>
+            <span>{{ $post->comments_count }} comments</span>
             <span class="">•</span>
             <span>{{ $post->view_count }} views</span>
         </div>
@@ -79,15 +85,7 @@
             <!-- Create Comment Card Top -->
             <div>
                 <div class="flex items-start /space-x-3/">
-                    <!-- User Avatar -->
-                    <!-- <div class="flex-shrink-0">-->
-                    <!--              <img-->
-                    <!--                class="h-10 w-10 rounded-full object-cover"-->
-                    <!--                src="https://avatars.githubusercontent.com/u/831997"-->
-                    <!--                alt="Ahmed Shamim" />-->
-                    <!--            </div> -->
-                    <!-- /User Avatar -->
-
+                    
                     <!-- Auto Resizing Comment Box -->
                     <div class="text-gray-700 font-normal w-full">
                         @error('comment')
@@ -105,7 +103,7 @@
                             class="flex w-full h-auto min-h-[40px] px-3 py-2 text-sm bg-gray-100 focus:bg-white border border-sm rounded-lg border-neutral-300 ring-offset-background placeholder:text-neutral-400 focus:border-neutral-300 focus:outline-none focus:ring-1 focus:ring-offset-0 focus:ring-neutral-400 disabled:cursor-not-allowed disabled:opacity-50 text-gray-900"
                             style="height: 38px;" required>{{ old('comment') }}</textarea>
                     </div>
-                    <input type="hidden" name="post_uuid" value="{{ $post->uuid }}" />
+                    <input type="hidden" name="post_id" value="{{ $post->id }}" />
                 </div>
             </div>
 
@@ -135,14 +133,14 @@
     <!-- /Barta Card -->
     <hr />
     <div class="flex flex-col space-y-6">
-        <h1 class="text-lg font-semibold">Comments ({{ count($comments) }})</h1>
+        <h1 class="text-lg font-semibold">Comments ({{ $post->comments_count }})</h1>
 
-        @if ($comments->count()!=0)
+        @if ($post->comments_count != 0)
             <!-- Barta User Comments Container -->
             <article
                 class="bg-white border-2 border-black rounded-lg shadow mx-auto max-w-none px-4 py-2 sm:px-6 min-w-full divide-y">
                 <!-- Comments -->
-                @foreach ($comments as $comment)
+                @foreach ($post->comments as $comment)
                     <!-- Comment 1 -->
                     <div class="py-4">
                         <!-- Barta User Comments Top -->
@@ -153,19 +151,19 @@
                                     <div class="flex-shrink-0">
                                         <img class="h-10 w-10 rounded-full object-cover"
                                             src="https://avatars.githubusercontent.com/u/61485238"
-                                            alt="{{ $comment->username }}" />
+                                            alt="{{ $comment->user->username }}" />
                                     </div>
                                     <!-- /User Avatar -->
                                     <!-- User Info -->
                                     <div class="text-gray-900 flex flex-col min-w-0 flex-1">
                                         <a href="{{ route('profile', $comment->user_id) }}"
                                             class="hover:underline font-semibold line-clamp-1">
-                                            {{ $comment->first_name }} {{ $comment->last_name }}
+                                            {{ $comment->user->getFullName() }}
                                         </a>
 
-                                        <a href="{{ route('profile', $comment->user_id) }}"
+                                        <a href="{{ route('profile', $comment->user->id) }}"
                                             class="hover:underline text-sm text-gray-500 line-clamp-1">
-                                            {{ '@' . $comment->username }}
+                                            {{ '@' . $comment->user->username }}
                                         </a>
                                     </div>
                                     <!-- /User Info -->

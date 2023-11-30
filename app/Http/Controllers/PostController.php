@@ -5,42 +5,46 @@ namespace App\Http\Controllers;
 use App\Http\Requests\PostDeleteRequest;
 use App\Http\Requests\PostEditRequest;
 use App\Http\Requests\PostFeedRequest;
+use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Ramsey\Uuid\Uuid;
 
 class PostController extends Controller
 {
     public function index()
     {
         $user = Auth::user();
-        $posts = DB::table('posts')
-            ->join('users', 'users.id', '=', 'posts.user_id')
-            ->select('users.id', 'users.first_name', 'users.last_name', 'users.username', 'posts.*')
-            ->orderBy('posts.created_at', 'desc')->get();
-
-        $perPostCommentCount = DB::table('comments')
-            ->join('posts', 'posts.uuid', '=', 'comments.post_uuid')
-            ->select('posts.uuid', DB::raw('COUNT(*) as numberOfComment'))
-            ->groupBy('posts.uuid')
-            ->get();
-
-        return view('home.index', ['user' => $user, 'posts' => $posts, 'perPostCommentCount' => $perPostCommentCount]);
+        $posts = Post::with('user:id,first_name,last_name,username,avatar')
+            ->orderByDesc('created_at')
+            ->withCount('comments')->get('posts.*');
+        return view('home.index', ['user' => $user, 'posts' => $posts]);
     }
 
     public function store(PostFeedRequest $request)
     {
+
         $validated = $request->validated();
-        $validated = array_merge(
+        //dd($validated);
+
+        if ($request->hasFile('image')) {
+            if ($request->file('image')->isValid()) {
+                $imagePath = $request->image->store(config('constants.POST_IMAGE_PATH'), 'public');
+                $validated['image'] = $imagePath;
+            }
+        }
+
+        $validatedAfterMerge = array_merge(
             $validated,
             [
-                'uuid' => (string) Uuid::uuid4(),
                 'user_id' => Auth::user()->id,
                 'created_at' => now(),
-            ]);
-        $id = DB::table('posts')->insertGetId($validated);
-        if ($id) {
+            ]
+        );
+
+        $post = Post::create($validatedAfterMerge);
+
+        if ($post) {
             return redirect()->route('dashboard')->with('message', 'success|Post added successfully');
         } else {
             return redirect()->route('dashboard')->withInput()->with('message', 'error|Something went wrong');
@@ -55,7 +59,7 @@ class PostController extends Controller
         $posts = DB::table('posts')
             ->join('users', 'users.id', '=', 'posts.user_id')
             ->select('users.id', 'users.first_name', 'users.last_name', 'users.username', 'posts.*')
-            ->where('posts.description', 'like', '%#'.$key.'%')
+            ->where('posts.description', 'like', '%#' . $key . '%')
             ->orderBy('posts.created_at', 'desc')->get();
 
         //DB::table("posts")->increment('posts.view_count', 1, []);
@@ -68,22 +72,20 @@ class PostController extends Controller
         $key = $request->route('key');
         $user = Auth::user();
 
-        $post = DB::table('posts')
-            ->join('users', 'users.id', '=', 'posts.user_id')
-            ->select('users.id', 'users.first_name', 'users.last_name', 'users.username', 'posts.*')
-            ->where('posts.uuid', '=', $key)
+        $post = Post::with(
+            [
+                'user:id,first_name,last_name,username,avatar',
+                'comments' => function ($query) {
+                    $query->with('user:id,first_name,last_name,username');
+                },
+            ])
+            ->withCount('comments')
+            ->where('posts.id', '=', $key)
             ->first();
+
         if ($post) {
-            DB::table('posts')->where('posts.uuid', '=', $key)->increment('posts.view_count', 1, []);
-
-            $comments = DB::table('comments')
-                ->join('users', 'users.id', '=', 'comments.user_id')
-                ->select('users.id as user_id', 'users.first_name', 'users.last_name', 'users.username', 'comments.comment', 'comments.id as comment_id', 'comments.created_at')
-                ->where('comments.post_uuid', '=', $key)
-                ->get();
-
-            //dd($comments);
-            return view('home.single', ['user' => $user, 'post' => $post, 'comments' => $comments]);
+            $post->increment('view_count');
+            return view('home.single', ['user' => $user, 'post' => $post]);
         } else {
             return view('errors.404', ['user' => $user]);
         }
@@ -94,11 +96,12 @@ class PostController extends Controller
     {
         $key = $request->route('key');
         $user = Auth::user();
-        $post = DB::table('posts')
-            ->join('users', 'users.id', '=', 'posts.user_id')
-            ->select('users.id', 'users.first_name', 'users.last_name', 'users.username', 'posts.*')
-            ->where('posts.uuid', '=', $key)
-            ->first();
+
+        $post = Post::find($key)->with(
+            [
+                'user:id,first_name,last_name,username',
+            ])->first();
+
         if ($post) {
             return view('home.single_edit', ['user' => $user, 'post' => $post]);
         } else {
@@ -110,7 +113,7 @@ class PostController extends Controller
     public function storePostByUUID(PostEditRequest $request)
     {
 
-        $uuid = $request->route('key');
+        $id = $request->route('key');
         $validated = $request->validated();
 
         $validated = array_merge(
@@ -119,8 +122,8 @@ class PostController extends Controller
                 'updated_at' => now(),
             ]
         );
-        $id = DB::table('posts')->where([
-            'uuid' => $uuid,
+        Post::where([
+            'id' => $id,
             'user_id' => Auth::user()->id,
         ])->update($validated);
 
@@ -136,8 +139,7 @@ class PostController extends Controller
     {
 
         $key = $request->route('key');
-        $rowsAffected = DB::table('posts')->where('uuid', $key)->delete();
-
+        $rowsAffected = Post::where('id', $key)->delete();
         if ($rowsAffected) {
             return redirect()->route('dashboard')->with('message', 'success|Post deleted successfully');
         } else {

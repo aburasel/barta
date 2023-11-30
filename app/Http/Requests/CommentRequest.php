@@ -23,7 +23,7 @@ class CommentRequest extends FormRequest
     {
         return [
             'comment' => ['required', 'max:4096'],
-            'post_uuid' => ['required', 'max:128'],
+            'post_id' => ['required', 'max:128'],
         ];
     }
 }

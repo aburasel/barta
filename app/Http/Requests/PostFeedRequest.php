@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\File;
 
 class PostFeedRequest extends FormRequest
 {
@@ -23,6 +24,10 @@ class PostFeedRequest extends FormRequest
     {
         return [
             'description' => ['required', 'max:4096'],
+            'picture' => [
+                'image',
+                File::types(['jpeg', 'jpg', 'png'])->max('5mb'),
+                'dimensions:min_width =250,min_height =175,max_width =1000,max_height =700'],
         ];
     }
 }

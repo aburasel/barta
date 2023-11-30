@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Rules\PersonNameRules;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\File;
 use Illuminate\Validation\Rule;
 
 class ProfileUpdateRequest extends FormRequest
@@ -22,6 +23,10 @@ class ProfileUpdateRequest extends FormRequest
             'password' => ['required', 'max:32'],
             'bio' => ['nullable', 'max:128'],
             'username' => ['required', 'lowercase', 'string', 'lowercase', 'max:32', Rule::unique('users')->ignore($this->user()->id)],
+            'picture' => [
+                'image',
+                File::types(['jpeg', 'jpg', 'png'])->max('5mb'),
+                'dimensions:min_width =250,min_height =175,max_width =500,max_height =350'],
         ];
     }
 }
