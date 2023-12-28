@@ -14,7 +14,8 @@
     @include('home.partials.post_card')
 @endsection
 @section('barta_card')
-    @include('home.partials.barta_card')
+    @livewire('post-list')
+    {{-- @include('home.partials.barta_card') --}}
 @endsection
 @section('footer')
     @include('home.partials.footer')
