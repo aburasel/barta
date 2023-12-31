@@ -24,6 +24,7 @@ class PostController extends Controller
     public function index()
     {
         $user = Auth::user();
+
         return view('home.index', ['user' => $user]);
     }
 

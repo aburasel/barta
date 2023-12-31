@@ -7,12 +7,14 @@ use Livewire\Component;
 
 class PostList extends Component
 {
-
     const ITEMS_PER_PAGE = 10;
 
     public $postIdChunks = [];
+
     public $page = 1;
+
     public $maxPage = 1;
+
     public $queryCount = 0;
 
     public function mount()

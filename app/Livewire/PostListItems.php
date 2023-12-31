@@ -12,17 +12,17 @@ class PostListItems extends Component
 
     public function render()
     {
-        $user = Auth::user();     
+        $user = Auth::user();
 
         $posts = Post::with('user:id,first_name,last_name,username,avatar')
-        ->whereIn('id',$this->postIds)
-        ->orderByDesc('created_at')
-        ->withCount('comments')->get('posts.*');
+            ->whereIn('id', $this->postIds)
+            ->orderByDesc('created_at')
+            ->withCount('comments')->get('posts.*');
         //dump($this->postIds);dd($posts);
 
         return view('livewire.post-list-items', [
             'posts' => $posts,
-            'user' => $user
+            'user' => $user,
         ]);
     }
 }

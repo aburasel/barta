@@ -64,13 +64,13 @@ class User extends Authenticatable
 
     public function getFullName()
     {
-        return $this->first_name ?: '' . ' ' . $this->last_name ?: '';
+        return $this->first_name ?: ''.' '.$this->last_name ?: '';
     }
 
     public static function boot(): void
     {
         parent::boot();
-        Model::preventLazyLoading(!app()->isProduction());
+        Model::preventLazyLoading(! app()->isProduction());
         Model::preventSilentlyDiscardingAttributes(app()->isLocal());
     }
 }

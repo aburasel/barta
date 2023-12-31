@@ -42,4 +42,4 @@ Route::middleware('auth')->group(function () {
     Route::post('/comment', [CommentController::class, 'store'])->name('comment');
 });
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';
