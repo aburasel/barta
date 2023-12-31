@@ -8,7 +8,7 @@ use Livewire\Component;
 class PostList extends Component
 {
 
-    const ITEMS_PER_PAGE = 5;
+    const ITEMS_PER_PAGE = 10;
 
     public $postIdChunks = [];
     public $page = 1;

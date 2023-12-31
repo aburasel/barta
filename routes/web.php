@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
-use App\Http\Controllers\PostControllerTest;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProfileSearchController;
 use Illuminate\Support\Facades\Route;
@@ -16,15 +15,14 @@ use Illuminate\Support\Facades\Route;
 | routes are loaded by the RouteServiceProvider and all of them will
 | be assigned to the "web" middleware group. Make something great!
 |
-*/
+ */
 
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    //Route::get('/', [PostController::class, 'index'])->name('dashboard');
-    Route::get('/', [PostControllerTest::class, 'index'])->name('dashboard');
+    Route::get('/', [PostController::class, 'index'])->name('dashboard');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -44,4 +42,4 @@ Route::middleware('auth')->group(function () {
     Route::post('/comment', [CommentController::class, 'store'])->name('comment');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
