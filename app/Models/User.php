@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Notifications\Notification;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -64,13 +65,27 @@ class User extends Authenticatable
 
     public function getFullName()
     {
-        return $this->first_name ?: ''.' '.$this->last_name ?: '';
+        return $this->first_name ?: '' . ' ' . $this->last_name ?: '';
     }
 
     public static function boot(): void
     {
         parent::boot();
-        Model::preventLazyLoading(! app()->isProduction());
+        Model::preventLazyLoading(!app()->isProduction());
         Model::preventSilentlyDiscardingAttributes(app()->isLocal());
+    }
+
+    /**
+     * Route notifications for the mail channel.
+     *
+     * @return  array<string, string>|string
+     */
+    public function routeNotificationForMail(Notification $notification): array | string
+    {
+        // Return email address only...
+        //return $this->email;
+
+        // Return email address and name...
+        return [$this->email => $this->getFullName()];
     }
 }

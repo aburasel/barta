@@ -2,15 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Post extends Model
+class Like extends Model
 {
-    use HasUuids, HasFactory;
+    use HasFactory;
 
     /**
      * The attributes that are mass assignable.
@@ -18,21 +16,10 @@ class Post extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'description',
         'user_id',
-        'view_count',
-        'image',
+        'post_id',
         'created_at',
         'updated_at',
-    ];
-
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
-    protected $hidden = [
-
     ];
 
     /**
@@ -45,19 +32,9 @@ class Post extends Model
         'updated_at' => 'datetime',
     ];
 
-    public function user(): BelongsTo
+    public function post(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'user_id');
-    }
-
-    public function comments(): HasMany
-    {
-        return $this->hasMany(Comment::class);
-    }
-
-    public function likes(): HasMany
-    {
-        return $this->hasMany(Like::class);
+        return $this->belongsTo(Post::class);
     }
 
     public static function boot(): void
@@ -65,5 +42,10 @@ class Post extends Model
         parent::boot();
         Model::preventLazyLoading(!app()->isProduction());
         Model::preventSilentlyDiscardingAttributes(app()->isLocal());
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProfileSearchController;
@@ -40,6 +41,8 @@ Route::middleware('auth')->group(function () {
     Route::post('profile/search/', [ProfileSearchController::class, 'searchProfile'])->name('profile.search');
 
     Route::post('/comment', [CommentController::class, 'store'])->name('comment');
+
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

@@ -43,13 +43,54 @@
                     <form action="{{ route('profile.search') }}" method="POST" class="flex items-center">
                         @csrf
                         <input type="text" name ="search" placeholder="Search..." required
-                            class="border-2 border-gray-300 bg-white h-10 px-5 pr-10 rounded-full text-sm focus:outline-none" value=""/>
-                          
-                        
-                        <input type="submit" style="display:none"/>
+                            class="border-2 border-gray-300 bg-white h-10 px-5 pr-10 rounded-full text-sm focus:outline-none"
+                            value="" />
+
+
+                        <input type="submit" style="display:none" />
                     </form>
                     <div class="hidden sm:ml-6 sm:flex gap-2 sm:items-center">
 
+                        <!-- Notification dropdown -->
+                        <div class="relative ml-3" x-data="{ open: false }">
+                            <div>
+                                @if (auth()->user()->unreadNotifications->count() != 0)
+                                    <div
+                                        class="absolute bottom-auto left-auto right-0 top-0 z-10 inline-block -translate-y-1/2 translate-x-2/4 rotate-0 skew-x-0 skew-y-0 scale-x-100 scale-y-100 whitespace-nowrap rounded-full bg-red-700 px-2.5 py-1 text-center align-baseline text-xs font-bold leading-none text-white">
+                                        {{ auth()->user()->unreadNotifications->count() }}+
+                                    </div>
+                                @endif
+
+                                <button @click="open = !open" type="button"
+                                    class="flex rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+                                    id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                                    <span class="sr-only">Notification</span>
+                                    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
+
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <!-- Dropdown menu -->
+                            <div x-show="open" @click.away="open = false"
+                                class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                                role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button"
+                                tabindex="-1">
+
+                                @forelse (auth()->user()->unreadNotifications as $item)
+                                    <a href={{ route('notifications') }}
+                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem"
+                                        tabindex="-1"
+                                        id="user-menu-item-{{ $loop->index }}">{{ $item->data['message'] }}</a>
+                                @empty
+                                    <p>No Notifications</p>
+                                @endforelse
+
+                            </div>
+                        </div>
                         <!-- Profile dropdown -->
                         <div class="relative ml-3" x-data="{ open: false }">
                             <div>
