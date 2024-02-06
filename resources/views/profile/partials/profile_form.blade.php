@@ -84,8 +84,7 @@
                     </div>
 
                     <div class="col-span-full">
-                        <label for="username" class="block text-sm font-medium leading-6 text-gray-900">Email
-                            address</label>
+                        <label for="username" class="block text-sm font-medium leading-6 text-gray-900">Username</label>
                         <div class="mt-2">
                             <input id="username" name="username" type="text" autocomplete="username" required
                                 max="32" value="{{ old('username') ? old('username') : $user->username }}"

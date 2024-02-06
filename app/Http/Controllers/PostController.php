@@ -92,6 +92,8 @@ class PostController extends Controller
 
     public function editPostByUUID(Request $request)
     {
+        $this->authorize('edit', Post::class);
+        
         $key = $request->route('key');
         $user = Auth::user();
 
@@ -112,6 +114,7 @@ class PostController extends Controller
     {
 
         $id = $request->route('key');
+        $this->authorize('update', Post::find($id));
         $validated = $request->validated();
 
         $validated = array_merge(
@@ -133,10 +136,10 @@ class PostController extends Controller
 
     }
 
-    public function delete(PostDeleteRequest $request)
+    public function delete(Request $request)
     {
-
         $key = $request->route('key');
+        $this->authorize('delete', Post::find($key));
         $rowsAffected = Post::where('id', $key)->delete();
         if ($rowsAffected) {
             return redirect()->route('dashboard')->with('message', 'success|Post deleted successfully');
